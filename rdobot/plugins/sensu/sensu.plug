@@ -1,0 +1,9 @@
+[Core]
+Name = Errbot-Sensu
+Module = errbot-sensu
+
+[Documentation]
+Description = An errbot sensu monitoring plugin to do operations
+
+[Python]
+Version = 2

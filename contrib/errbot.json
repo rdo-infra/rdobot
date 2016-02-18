@@ -1,0 +1,8 @@
+{
+  "handlers": {
+    "test": {
+      "type": "pipe",
+      "command": "/etc/sensu/handlers/errbot.py --endpoint http://errbot/event"
+    }
+  }
+}

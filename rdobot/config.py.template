@@ -1,0 +1,86 @@
+import logging
+import os
+
+# For full configuration options, look at
+# https://github.com/errbotio/errbot/blob/master/errbot/config-template.py
+
+#######################################################
+# Core Err configuration                              #
+#######################################################
+
+BACKEND = 'IRC'
+STORAGE = 'Shelf'
+BOT_EXTRA_STORAGE_PLUGINS_DIR = None
+
+BOT_DATA_DIR = os.path.dirname(os.path.realpath(__file__)) + "/data"
+BOT_EXTRA_PLUGIN_DIR = os.path.dirname(os.path.realpath(__file__)) + "/plugins"
+BOT_LOG_FILE = os.path.dirname(os.path.realpath(__file__)) + "/logs/err.log"
+BOT_LOG_LEVEL = logging.INFO
+
+BOT_ASYNC = True
+
+#######################################################
+# IRC Config                                          #
+#######################################################
+
+BOT_IDENTITY = {
+    # IRC
+    'nickname':          'rdobot',
+    'username':          'rdobot',
+    'password':          '',
+    'nickserv_password': '',
+    'server':            'chat.freenode.net',
+    'port':              6697,
+    'ssl':               True,
+}
+
+IRC_CHANNEL_RATE = 1
+IRC_PRIVATE_RATE = 1
+IRC_RECONNECT_ON_KICK = 5
+IRC_RECONNECT_ON_DISCONNECT = 5
+
+CHATROOM_PRESENCE = ['#rdo-dev']
+CHATROOM_FN = 'rdobot'
+
+#######################################################
+# Command configuration                               #
+#######################################################
+BOT_PREFIX = '!'
+
+BOT_ADMINS = ('dmsimard')
+DIVERT_TO_PRIVATE = ('help', 'about', 'status')
+HIDE_RESTRICTED_COMMANDS = True
+HIDE_RESTRICTED_ACCESS = True
+SUPPRESS_CMD_NOT_FOUND = True
+ACCESS_CONTROLS = {
+    'status': {
+        'allowusers': BOT_ADMINS
+    },
+    'about': {
+        'allowusers': BOT_ADMINS
+    },
+    'uptime': {
+        'allowusers': BOT_ADMINS
+    },
+    'help': {
+        'allowusers': BOT_ADMINS
+    }
+}
+
+#######################################################
+# Monitoring plugin configuration                     #
+#######################################################
+MONITORING_BROADCAST_CHANNELS = ['#rdo-dev']
+MONITORING_DASHBOARD = 'http://uchiwa:3000'
+MONITORING_ENDPOINT = 'http://api:4567'
+MONITORING_USERNAME = 'username'
+MONITORING_PASSWORD = 'password'
+
+#######################################################
+# Misc parameters                                     #
+#######################################################
+BOT_LOG_SENTRY = False
+SENTRY_DSN = ''
+SENTRY_LOGLEVEL = BOT_LOG_LEVEL
+CHATROOM_RELAY = {}
+REVERSE_CHATROOM_RELAY = {}
