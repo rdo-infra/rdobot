@@ -2,4 +2,4 @@ errbot==3.2.2
 requests>=2.7.0
 irc>=12.1.4
 simplejson>=3.7.1
-pysensu-ng==0.3.0
+pysensu-ng>=0.4.0

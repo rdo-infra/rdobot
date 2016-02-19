@@ -1,8 +1,7 @@
 from errbot import BotPlugin, botcmd, webhook
 
 import logging
-import json
-from sensu import SensuAPI
+from pysensu.api import SensuAPI
 
 class ErrbotSensu(BotPlugin):
     """An Err Sensu Monitoring plugin"""
