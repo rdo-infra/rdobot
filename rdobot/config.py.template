@@ -72,9 +72,11 @@ ACCESS_CONTROLS = {
 #######################################################
 MONITORING_BROADCAST_CHANNELS = ['#rdo-dev']
 MONITORING_DASHBOARD = 'http://uchiwa:3000'
+MONITORING_DASHBOARD_USERNAME = 'rdo'
+MONITORING_DASHBOARD_PASSWORD = 'rdo'
 MONITORING_ENDPOINT = 'http://api:4567'
-MONITORING_USERNAME = 'username'
-MONITORING_PASSWORD = 'password'
+MONITORING_USERNAME = 'sensu_username'
+MONITORING_PASSWORD = 'sensu_password'
 
 #######################################################
 # Misc parameters                                     #

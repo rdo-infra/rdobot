@@ -3,6 +3,7 @@ from errbot import BotPlugin, botcmd, webhook
 import logging
 from pysensu.api import SensuAPI
 
+
 class ErrbotSensu(BotPlugin):
     """An Err Sensu Monitoring plugin"""
     min_err_version = '3.2.2'
@@ -58,8 +59,10 @@ class ErrbotSensu(BotPlugin):
             !sensu dashboard
         """
         dashboard = self.bot_config.MONITORING_DASHBOARD
-        msg = "The Uchiwa Sensu dashboard is available at: {0}"
-        self._monitoring_broadcast(msg.format(dashboard))
+        username = self.bot_config.MONITORING_DASHBOARD_USERNAME
+        password = self.bot_config.MONITORING_DASHBOARD_PASSWORD
+        msg = "The Uchiwa dashboard is available at: {0} (credentials: {1}/{2})"
+        self._monitoring_broadcast(msg.format(dashboard, username, password))
 
     @botcmd(split_args_with=None)
     def sensu_clients(self, msg, args):
@@ -102,20 +105,36 @@ class ErrbotSensu(BotPlugin):
         hostname = params['client']['name']
         address = params['client']['address']
         check = params['check']['name']
-        broadcast = params['check']['broadcast']
         output = params['check']['output']
 
+        # Custom attributes
+        # datacenter is a custom client attribute for Uchiwa links
+        datacenter = params['client']['datacenter']
+        # broadcast is a custom check attribute for possible
+        try:
+            broadcast = params['check']['broadcast']
+        except KeyError:
+            broadcast = '#undef'
+
+        dashboard = self.bot_config.MONITORING_DASHBOARD
+        check_url = "{0}/#/client/{1}/{2}?check={3}".format(dashboard,
+                                                            datacenter,
+                                                            hostname,
+                                                            check)
+
         msg_type = {
-            'create': "NEW PROBLEM: {0} ({1}): {2}",
-            'resolve': "RESOLVED PROBLEM: {0} ({1}): {2}",
-            'flapping': "FLAPPING PROBLEM: {0} ({1}): {2}",
-            'unknown': "UNKNOWN PROBLEM: {0} ({1}): {2}"
+            'create': "NEW PROBLEM: {0} ({1}): {2} @ {3}",
+            'resolve': "RESOLVED PROBLEM: {0} ({1}): {2} @ {3}",
+            'flapping': "FLAPPING PROBLEM: {0} ({1}): {2} @ {3}",
+            'unknown': "UNKNOWN PROBLEM: {0} ({1}): {2} @ {3}"
         }
 
         if params['action'] in msg_type:
-            msg = msg_type[params['action']].format(hostname, address, check)
+            msg = msg_type[params['action']].format(hostname, address, check,
+                                                    check_url)
         else:
-            msg = msg_type['unknown'].format(hostname, address, check)
+            msg = msg_type['unknown'].format(hostname, address, check,
+                                             check_url)
 
         self._monitoring_broadcast(msg, broadcast)
         self._monitoring_broadcast(output, broadcast)
