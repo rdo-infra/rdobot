@@ -5,7 +5,8 @@ NOTE: This is a work in progress!
 Installing
 ----------
 
-    yum install python-pip libffi-devel python-devel "@Development Tools"
+    yum install python-pip openssl-devel libffi-devel python-devel
+    "@Development Tools"
 
     pip install -r requirements.txt
 

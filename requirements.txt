@@ -3,3 +3,5 @@ requests>=2.7.0
 irc>=12.1.4
 simplejson>=3.7.1
 pysensu-ng>=0.4.0
+setuptools>=17.1
+funcsigs>=0.4
