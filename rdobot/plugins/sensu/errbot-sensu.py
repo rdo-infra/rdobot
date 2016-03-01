@@ -92,7 +92,7 @@ class ErrbotSensu(BotPlugin):
 
     # Plugin endpoints
     @webhook
-    def event(self, kwargs):
+    def sensu_event(self, kwargs):
         host_params = ['action', 'client', 'check', 'occurrences', 'timestamp']
         params = {
             param: kwargs.get(param, None)
@@ -105,7 +105,7 @@ class ErrbotSensu(BotPlugin):
         hostname = params['client']['name']
         address = params['client']['address']
         check = params['check']['name']
-        output = params['check']['output']
+        output = self._truncate_string(params['check']['output'], length=250)
 
         # Custom attributes
         # datacenter is a custom client attribute for Uchiwa links
@@ -123,25 +123,37 @@ class ErrbotSensu(BotPlugin):
                                                             check)
 
         msg_type = {
-            'create': "NEW PROBLEM: {0} ({1}): {2} @ {3}",
-            'resolve': "RESOLVED PROBLEM: {0} ({1}): {2} @ {3}",
-            'flapping': "FLAPPING PROBLEM: {0} ({1}): {2} @ {3}",
-            'unknown': "UNKNOWN PROBLEM: {0} ({1}): {2} @ {3}"
+            'create': "NEW: {0} - {1} @ {2} |#| {3}",
+            'resolve': "RESOLVED: {0} - {1} @ {2} |#| {3}",
+            'flapping': "FLAPPING: {0} - {1} @ {2} |#| {3}",
+            'unknown': "UNKNOWN: {0} - {1} @ {2} |#| {3}"
         }
 
         if params['action'] in msg_type:
-            msg = msg_type[params['action']].format(hostname, address, check,
-                                                    check_url)
+            msg = msg_type[params['action']].format(hostname, check, check_url,
+                                                    output)
         else:
-            msg = msg_type['unknown'].format(hostname, address, check,
-                                             check_url)
+            msg = msg_type['unknown'].format(hostname, check, check_url,
+                                             output)
 
         self._monitoring_broadcast(msg, broadcast)
-        self._monitoring_broadcast(output, broadcast)
 
     def _monitoring_broadcast(self, msg, broadcast=None):
         # If a broadcast channel is configured for a sensu check, broadcast to
         # it if it is configured to be a broadcast channel.
         for room in self.bot_config.MONITORING_BROADCAST_CHANNELS:
             if broadcast is None or room in broadcast:
-                self.send(room, '[sensu] ' + msg, message_type='groupchat')
+                msg = self._truncate_string('[sensu] ' + msg)
+                self.send(room, msg, message_type='groupchat')
+
+    @staticmethod
+    def _truncate_string(message, length=460):
+        """
+        Helper method to truncate messages too long for IRC
+        :param message: message
+        :param length: max length
+        :return:
+        """
+        if len(message) > length:
+            return message[:length] + " [...]"
+        return message
