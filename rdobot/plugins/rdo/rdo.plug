@@ -1,0 +1,9 @@
+[Core]
+Name = Errbot-Rdo
+Module = errbot-rdo
+
+[Documentation]
+Description = An errbot RDO plugin to do RDO things
+
+[Python]
+Version = 2
