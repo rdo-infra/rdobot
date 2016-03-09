@@ -45,7 +45,7 @@ class ErrbotRdo(BotPlugin):
             author = '^'
 
         # s/rdo manager/tripleo/
-        pattern = ".*(rdo manager|rdo-m).*"
+        pattern = ".*(rdo manager|rdo-m\s).*"
         if re.match(pattern, message.body, re.IGNORECASE):
             response = "I think {0} meant TripleO! ( {1} )".format(author,
                                                                    TRIPLEO)
