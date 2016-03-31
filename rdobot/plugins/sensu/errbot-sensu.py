@@ -110,10 +110,16 @@ class ErrbotSensu(BotPlugin):
         # Custom attributes
         # datacenter is a custom client attribute for Uchiwa links
         datacenter = params['client']['datacenter']
-        # broadcast is a custom check attribute for possible
+        # broadcast is a custom check attribute to know where to send IRC notifications
         try:
-            broadcast = params['check']['broadcast']
-        except KeyError:
+            if 'broadcast' in params['check']:
+                broadcast = params['check']['broadcast']
+            elif 'custom' in params['check'] and 'broadcast' in params['check']['custom']:
+                broadcast = params['check']['custom']['broadcast']
+            else:
+                logging.info("This notification does not have a broadcast assigned, not doing anything with it.")
+        except KeyError as e:
+            logging.info("KeyError when trying to set broadcast config: " + str(e))
             broadcast = '#undef'
 
         dashboard = self.bot_config.MONITORING_DASHBOARD
