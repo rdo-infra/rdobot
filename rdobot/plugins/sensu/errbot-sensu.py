@@ -118,9 +118,10 @@ class ErrbotSensu(BotPlugin):
                 broadcast = params['check']['custom']['broadcast']
             else:
                 logging.info("This notification does not have a broadcast assigned, not doing anything with it.")
+                return False
         except KeyError as e:
             logging.info("KeyError when trying to set broadcast config: " + str(e))
-            broadcast = '#undef'
+            return False
 
         dashboard = self.bot_config.MONITORING_DASHBOARD
         check_url = "{0}/#/client/{1}/{2}?check={3}".format(dashboard,
