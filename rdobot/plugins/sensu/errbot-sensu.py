@@ -61,8 +61,8 @@ class ErrbotSensu(BotPlugin):
         dashboard = self.bot_config.MONITORING_DASHBOARD
         username = self.bot_config.MONITORING_DASHBOARD_USERNAME
         password = self.bot_config.MONITORING_DASHBOARD_PASSWORD
-        msg = "The Uchiwa dashboard is available at: {0} (credentials: {1}/{2})"
-        self._monitoring_broadcast(msg.format(dashboard, username, password))
+        message = "The Uchiwa dashboard is available at: {0} (credentials: {1}/{2})"
+        return message.format(dashboard, username, password)
 
     @botcmd(split_args_with=None)
     def sensu_clients(self, msg, args):
@@ -74,7 +74,8 @@ class ErrbotSensu(BotPlugin):
         clients = self.sensu.get_clients()
         client_names = [ client['name'] for client in clients ]
         client_names = ', '.join(client_names)
-        self._monitoring_broadcast("Clients: {0}".format(client_names))
+
+        return "Clients: {0}".format(client_names)
 
     @botcmd(split_args_with=None)
     def sensu_client(self, msg, args):
@@ -87,8 +88,7 @@ class ErrbotSensu(BotPlugin):
         client = self.sensu.get_client_data(client_name)
         self._monitoring_broadcast("Client details: {0}".format(client_name))
         for param in client:
-            self._monitoring_broadcast("{0}: {1}".format(param,
-                                                         str(client[param])))
+            yield "{0}: {1}".format(param, str(client[param]))
 
     # Plugin endpoints
     @webhook
@@ -103,7 +103,6 @@ class ErrbotSensu(BotPlugin):
         logging.debug("Unpacked parameters:" + str(kwargs))
 
         hostname = params['client']['name']
-        address = params['client']['address']
         check = params['check']['name']
         output = self._truncate_string(params['check']['output'], length=250)
 
@@ -143,13 +142,14 @@ class ErrbotSensu(BotPlugin):
             msg = msg_type['unknown'].format(hostname, check, check_url,
                                              output)
 
-        self._monitoring_broadcast(msg, broadcast)
+        self._monitoring_broadcast(msg, broadcast=broadcast)
 
     def _monitoring_broadcast(self, msg, broadcast=None):
-        # If a broadcast channel is configured for a sensu check, broadcast to
-        # it if it is configured to be a broadcast channel.
+        if broadcast is None:
+            return False
+
         for room in self.bot_config.MONITORING_BROADCAST_CHANNELS:
-            if broadcast is None or room in broadcast:
+            if room == broadcast:
                 msg = self._truncate_string('[sensu] ' + msg)
                 self.send(room, msg, message_type='groupchat')
 
