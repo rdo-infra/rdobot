@@ -47,7 +47,7 @@ CHATROOM_FN = 'rdobot'
 #######################################################
 BOT_PREFIX = '!'
 
-BOT_ADMINS = ('dmsimard')
+BOT_ADMINS = ('dmsimard',)
 DIVERT_TO_PRIVATE = ('help', 'about', 'status')
 HIDE_RESTRICTED_COMMANDS = True
 HIDE_RESTRICTED_ACCESS = True
