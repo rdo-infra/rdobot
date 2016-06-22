@@ -39,7 +39,7 @@ IRC_PRIVATE_RATE = 1
 IRC_RECONNECT_ON_KICK = 5
 IRC_RECONNECT_ON_DISCONNECT = 5
 
-CHATROOM_PRESENCE = ['#rdo-dev']
+CHATROOM_PRESENCE = ['#rdo-dev', '#rdo']
 CHATROOM_FN = 'rdobot'
 
 #######################################################
@@ -70,7 +70,7 @@ ACCESS_CONTROLS = {
 #######################################################
 # Monitoring plugin configuration                     #
 #######################################################
-MONITORING_BROADCAST_CHANNELS = ['#rdo-dev']
+MONITORING_BROADCAST_CHANNELS = ['#rdo-dev', '#rdo']
 MONITORING_DASHBOARD = 'http://uchiwa:3000'
 MONITORING_DASHBOARD_USERNAME = 'rdo'
 MONITORING_DASHBOARD_PASSWORD = 'rdo'
