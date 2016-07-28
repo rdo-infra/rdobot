@@ -2,6 +2,7 @@ from errbot import BotPlugin, botcmd, webhook
 
 import logging
 from pysensu.api import SensuAPI
+from pyshorteners import Shortener
 
 
 class ErrbotSensu(BotPlugin):
@@ -127,6 +128,8 @@ class ErrbotSensu(BotPlugin):
                                                             datacenter,
                                                             hostname,
                                                             check)
+        shortener = Shortener('Tinyurl')
+        check_url = shortener.short(check_url)
 
         msg_type = {
             'create': "NEW: {0} - {1} @ {2} |#| {3}",
