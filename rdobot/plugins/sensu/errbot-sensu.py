@@ -154,7 +154,7 @@ class ErrbotSensu(BotPlugin):
         for room in self.bot_config.MONITORING_BROADCAST_CHANNELS:
             if room == broadcast:
                 msg = self._truncate_string('[sensu] ' + msg)
-                self.send(room, msg, message_type='groupchat')
+                self.send(identifier=self.query_room(room), text=msg)
 
     @staticmethod
     def _truncate_string(message, length=460):
