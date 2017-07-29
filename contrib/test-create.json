@@ -1,0 +1,85 @@
+{
+    "action": "create",
+    "check": {
+        "broadcast": "#rdo-dev",
+        "command": "/usr/local/bin/check-disk-usage.rb",
+        "duration": 0.168,
+        "executed": 1469663793,
+        "handlers": [
+            "errbot"
+        ],
+        "history": [
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1"
+        ],
+        "interval": 60,
+        "issued": 1469663793,
+        "name": "integration-test",
+        "occurrences": 3,
+        "output": "Testing event creation from integration tests",
+        "retry_occurrences": 30,
+        "component_id": 7,
+        "standalone": false,
+        "status": 1,
+        "subscribers": [
+            "default"
+        ],
+        "total_state_change": 0,
+        "ttl": 180,
+        "type": "standard"
+    },
+    "client": {
+        "address": "10.164.155.158",
+        "datacenter": "rdo-monitoring",
+        "keepalive": {
+            "custom": {
+                "broadcast": "#rdo-dev"
+            },
+            "handlers": [
+                "errbot"
+            ],
+            "occurrences": 3,
+            "retry_occurrences": 30,
+            "thresholds": {
+                "critical": 300,
+                "warning": 180
+            }
+        },
+        "name": "test.rdoproject.org",
+        "redact": [],
+        "safe_mode": false,
+        "socket": {
+            "bind": "127.0.0.1",
+            "port": 3030
+        },
+        "subscriptions": [
+            "default"
+        ],
+        "timestamp": 1469663785,
+        "version": "0.23.2"
+    },
+    "id": "782a5bba-fd0f-4a4a-b71a-cff8eb877d2a",
+    "last_ok": null,
+    "last_state_change": 1469554052,
+    "occurrences": 1830,
+    "timestamp": 1469663794
+}
