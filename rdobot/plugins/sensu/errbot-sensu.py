@@ -108,8 +108,6 @@ class ErrbotSensu(BotPlugin):
         output = self._truncate_string(params['check']['output'], length=250)
 
         # Custom attributes
-        # datacenter is a custom client attribute for Uchiwa links
-        datacenter = params['client']['datacenter']
         # broadcast is a custom check attribute to know where to send IRC notifications
         try:
             if 'broadcast' in params['check']:
@@ -124,10 +122,9 @@ class ErrbotSensu(BotPlugin):
             return False
 
         dashboard = self.bot_config.MONITORING_DASHBOARD
-        check_url = "{0}/#/client/{1}/{2}?check={3}".format(dashboard,
-                                                            datacenter,
-                                                            hostname,
-                                                            check)
+        check_url = "{0}/#/client/uchiwa/{1}?check={2}".format(dashboard,
+                                                               hostname,
+                                                               check)
         shortener = Shortener('Tinyurl')
         check_url = shortener.short(check_url)
 
